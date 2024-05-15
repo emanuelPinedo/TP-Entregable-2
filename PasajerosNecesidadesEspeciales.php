@@ -1,6 +1,6 @@
 <?php
-include 'Pasajero.php';
-class PasajerosNecesidadesEspeciales extends Pasajero{
+include 'Pasajeros.php';
+class PasajerosNecesidadesEspeciales extends Pasajeros{
     private $servicioEspecial;//boolean
     private $asistencia;//boolean
     private $comidaEspecial;//boolean
@@ -45,4 +45,12 @@ class PasajerosNecesidadesEspeciales extends Pasajero{
             return 10; //Si no tiene servicios un 10%
         }
     }
+
+    public function __toString(){
+        return parent::__toString() . 
+        "\nRequiere servicio especial: " . $this->getServicioEspecial() . 
+        "\nRequiere asistencia: " . $this->getAsistencia() . 
+        "\nRequiere comida especial: " . $this->getComidaEspecial();
+    }
+
 }

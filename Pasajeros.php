@@ -1,5 +1,5 @@
 <?php
-class Pasajero{
+class Pasajeros{
     private $nombre;
     private $numAsiento;
     private $numTicketPasaje;
@@ -37,4 +37,11 @@ class Pasajero{
 	public function darPorcentajeIncremento(){
 		return 10;
 	}
+
+	public function __toString(){
+		return "Nombre del pasajero: " . $this->getNombre() .
+		"\nNúmero de asiento: " . $this->getNumAsiento() .
+		"\nNúmero de ticket: " . $this->getNumTicketPasaje();
+	}
+
 }

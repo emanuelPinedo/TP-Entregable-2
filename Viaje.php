@@ -137,40 +137,75 @@ class Viaje {
     }
 
     public function imprimirPasajeros(){
-        $pasajero = "";
-        $arregloPasajeros = $this->getColeObjPasajero();
-        foreach ($arregloPasajeros as $pasajeroActual) {
-            $pasajero .= $pasajeroActual ."\n";
+        $msj = "";
+        $i = 1;
+        foreach ($this->getColeObjPasajero() as $pasajero) {
+            if($pasajero instanceof PasajeroVIP){
+                $msj .= "Pasajero ". $i . ":\nTipo: VIP\n" . $pasajero . "\n";
+            } elseif ($pasajero instanceof PasajerosNecesidadesEspeciales) {
+                $msj .= "Pasajero " . $i . ":\nTipo: Especial\n" . $pasajero . "\n";
+            } else {
+                $msj .= "Pasajero " . $i . ":\nTipo: Común\n" . $pasajero . "\n----------------\n";
+            }
+            $i++;
         }
-        return $pasajero;
+
+        return $msj;
     }
 
-    public function venderPasaje($objPasajero){
-        $espacioDisponible = $this->getCantidadMaxPasajeros();
-        $cantEspaciosOcupados = count($this->getColeObjPasajero());
-        $colePasajeros = $this->getColeObjPasajero();
+    public function modificarPasajero($ticketPasajero, $nombreNuevo, $asientoNuevo){
+        $pasajGuardado = $this->getColeObjPasajero();
+        $cambiar = false;
+        foreach ($pasajGuardado as $pasaj){
+            if($pasaj->getNumTicketPasaje === $ticketPasajero){
+                $pasaj->setNombre($nombreNuevo);
+                $pasaj->setNumAsiento($asientoNuevo);
+                $cambiar = true;//Si entra el if, permitió cambiar los datos, retornará true.
+            }
+        }
+        return $cambiar;
+    }
+
+    public function modificarEmpleado($numeroLicencia, $nombreNuevoEmpleado, $apellidoNuevoEmpleado, $numeroNuevoEmpleado) {
+        $empleadoResponsable = $this->getObjResponsableViaje();
+        $cambiar = false;//Si no permite cambiar los datos del empleado retornará false.
+        foreach ($empleadoResponsable as $empleado){
+            if ($empleado->getNroLicencia() === $numeroLicencia){
+                $empleadoResponsable->setNombre($nombreNuevoEmpleado);
+                $empleadoResponsable->setApellido($apellidoNuevoEmpleado);
+                $empleadoResponsable->setNroEmpleado($numeroNuevoEmpleado);
+                $cambiar = true;//Si entra el if, permitió cambiar los datos, retornará true.
+            }
+        }
+        return $cambiar;
+    }
+
+    public function venderPasaje($objPasajero){;
+        $this->getColeObjPasajero()[] = $objPasajero;
         $precioPasaje = $this->getCostoViaje();
         $costoAbonado = -1;
-        if ($espacioDisponible > $cantEspaciosOcupados) {
-            array_push($colePasajeros,$objPasajero);
-            $this->setColeObjPasajero($colePasajeros);
-            $porcentajeIncremento = $objPasajero->darPorcentajeIncremento();
-            $costoAbonado = $precioPasaje * (1 + $porcentajeIncremento);
+        if ($this->hayPasajesDisponible()) {
+            $pasajeroNoRepetido = $this->agregarPasajero($objPasajero);
+            if ($pasajeroNoRepetido) {
+                $porcentajeIncremento = $objPasajero->darPorcentajeIncremento();
+                $costoAbonado = $precioPasaje * (1 + $porcentajeIncremento);
+                $this->setCostosAbonados($costoAbonado);
+            }
         }
         return $costoAbonado;
     }
 
+
     public function __toString(){
-        $pasajero = $this->imprimirPasajeros();
-        if ($pasajero === "") {
-            $pasajero = 0;
-        }
-        return "Codigo de viaje: ".$this->getCodigo().
-        "\nDestino: ".$this->getDestino(). 
-        "\nCantidad maxima de pasajeros: ".$this->getCantidadMaxPasajeros().
-        "\nPasajeros del viaje: \n".$pasajero.
-        "\nResponsable del viaje: \n".$this->getObjResponsableViaje().
-        "\nCosto del viaje: ".$this->getCostoViaje().
-        "\nCostos abonados por el pasajero: ".$this->getCostosAbonados();
-    }
+        return "DATOS DEL VIAJE: " .
+        "\n_________________________________________________" .
+        "\nCódigo de viaje: " . $this->getCodigo() .
+        "\nDestino: " . $this->getDestino() .
+        "\nCantidad máxima de pasajeros: " . $this->getCantidadMaxPasajeros() .
+        "\nResponsable del viaje: \n" . $this->getObjResponsableViaje() .
+        "\nCosto del viaje: " . $this->getCostoViaje() .
+        "\nCostos abonados por los pasajeros: " . $this->getCostosAbonados() .
+        "\nPasajeros:\n" . $this->imprimirPasajeros() .
+        "\n_________________________________________________";
+}
 }

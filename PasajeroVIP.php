@@ -1,6 +1,6 @@
 <?php
-include 'Pasajero.php';
-class PasajeroVIP extends Pasajero{
+include 'Pasajeros.php';
+class PasajeroVIP extends Pasajeros{
     private $numViajero;
     private $cantMillas;
 
@@ -29,9 +29,14 @@ class PasajeroVIP extends Pasajero{
 	public function darPorcentajeIncremento(){
 		$porc = 35;
 		if($this->getCantMillas() > 300){
-			$porc += 30;
+			$porc = 30;
 		}
 		return $porc;
 	}
 
+	public function __toString(){
+		return parent::__toString() . 
+		"\nNúmero de viajero frecuente: ". $this->getNumViajero() . 
+		"\nCantidad de millas: ". $this->getCantMillas();
+	}
 }
