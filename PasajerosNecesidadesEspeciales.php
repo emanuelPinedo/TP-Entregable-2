@@ -1,5 +1,4 @@
 <?php
-include 'Pasajeros.php';
 class PasajerosNecesidadesEspeciales extends Pasajeros{
     private $servicioEspecial;//boolean
     private $asistencia;//boolean

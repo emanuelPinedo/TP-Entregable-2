@@ -1,5 +1,4 @@
 <?php
-include 'Pasajeros.php';
 class PasajeroVIP extends Pasajeros{
     private $numViajero;
     private $cantMillas;

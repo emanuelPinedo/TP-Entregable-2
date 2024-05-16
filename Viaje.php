@@ -80,24 +80,6 @@ class Viaje {
 
     //metodos
 
-    public function cambiarPasajero($objPersona){
-        $dniPasajero = $objPersona->getNumDocumento();
-        $pasajeros = $this->getColeObjPasajero();
-        $contadorPasajeros = count($pasajeros);
-        $res = false;
-        $i = 0;
-        while (!$res && $i<$contadorPasajeros) {
-            if ($pasajeros[$i]->getNumDocumento() === $dniPasajero) {
-                $pasajeros[$i] = $objPersona;
-                $this->setColeObjPasajero($pasajeros);
-                $res = true;
-            } else {
-                $i++;
-            }
-        }
-        return $res;
-    }
-
     public function agregarCambiarResponsable ($objResponsable){
        $this->setObjResponsableViaje($objResponsable);
     }
@@ -119,7 +101,7 @@ class Viaje {
         $i = 0;
         //verificar si el pasajero ya existe en la coleccion
         while (!$pasajeroRepetido && $i<$contadorPasajeros) {
-            if ($arregloPasajeros[$i]->getNumDocumento() === $pasajero->getNumDocumento()) {
+            if ($arregloPasajeros[$i]->getTicketPasaje() === $pasajero->getNumTicketPasaje()) {
                 $pasajeroRepetido = true;
             } else {
                 $i++;
@@ -141,9 +123,9 @@ class Viaje {
         $i = 1;
         foreach ($this->getColeObjPasajero() as $pasajero) {
             if($pasajero instanceof PasajeroVIP){
-                $msj .= "Pasajero ". $i . ":\nTipo: VIP\n" . $pasajero . "\n";
+                $msj .= "Pasajero ". $i . ":\nTipo: VIP\n" . $pasajero . "\n----------------\n";
             } elseif ($pasajero instanceof PasajerosNecesidadesEspeciales) {
-                $msj .= "Pasajero " . $i . ":\nTipo: Especial\n" . $pasajero . "\n";
+                $msj .= "Pasajero " . $i . ":\nTipo: Especial\n" . $pasajero . "\n----------------\n";
             } else {
                 $msj .= "Pasajero " . $i . ":\nTipo: Común\n" . $pasajero . "\n----------------\n";
             }
@@ -153,11 +135,11 @@ class Viaje {
         return $msj;
     }
 
-    public function modificarPasajero($ticketPasajero, $nombreNuevo, $asientoNuevo){
+    public function modificarPasajero($nombreNuevo,$asientoNuevo,$ticketPasajero){
         $pasajGuardado = $this->getColeObjPasajero();
         $cambiar = false;
         foreach ($pasajGuardado as $pasaj){
-            if($pasaj->getNumTicketPasaje === $ticketPasajero){
+            if($pasaj->getNumTicketPasaje() === $ticketPasajero){
                 $pasaj->setNombre($nombreNuevo);
                 $pasaj->setNumAsiento($asientoNuevo);
                 $cambiar = true;//Si entra el if, permitió cambiar los datos, retornará true.
@@ -205,6 +187,7 @@ class Viaje {
         "\nResponsable del viaje: \n" . $this->getObjResponsableViaje() .
         "\nCosto del viaje: " . $this->getCostoViaje() .
         "\nCostos abonados por los pasajeros: " . $this->getCostosAbonados() .
+        "\n----------------\n" .
         "\nPasajeros:\n" . $this->imprimirPasajeros() .
         "\n_________________________________________________";
 }
