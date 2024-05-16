@@ -6,16 +6,16 @@ include_once 'PasajerosNecesidadesEspeciales.php';
 include_once 'ResponsableV.php';
 include_once 'Viaje.php';
 
-$objPasajero1 = new Pasajeros('Mema', 9, 12);
-$objPasajero2 = new Pasajeros('Cardo', 18, 24);
-$objPasajero3 = new Pasajeros('Marian', 424, 3444);
-$objPasajero4 = new Pasajeros('Nahue', 243, 235);
+$objPasajero1 = new Pasajeros('Mema', 9, '12');
+$objPasajero2 = new Pasajeros('Cardo', 18, '24');
+$objPasajero3 = new Pasajeros('Marian', 424, '3444');
+$objPasajero4 = new Pasajeros('Nahue', 243, '235');
 $objPasajero5 = new Pasajeros('Tame', 19, 12);
-$objPasajero6 = new PasajeroVIP('Pope', 34, 43, 432, 73);
-$objPasajero7 = new PasajeroVIP('Mati', 23, 7, 24, 343);
-$objPasajero8 = new PasajeroVIP('Pato', 42, 43, 77, 201);
-$objPasajero9 = new PasajerosNecesidadesEspeciales('Lauti', 29, 23423, true, true, true);
-$objPasajero10 = new PasajerosNecesidadesEspeciales('Ian', 67, 7324, false, true, false);
+$objPasajero6 = new PasajeroVIP('Pope', 34, '43', 432, 73);
+$objPasajero7 = new PasajeroVIP('Mati', 23, '7', 24, 343);
+$objPasajero8 = new PasajeroVIP('Pato', 42, '43', 77, 201);
+$objPasajero9 = new PasajerosNecesidadesEspeciales('Lauti', 29, '23423', true, true, true);
+$objPasajero10 = new PasajerosNecesidadesEspeciales('Ian', 67, '7324', false, true, false);
 
 //$objColeccionPasajero = [];
 
@@ -67,7 +67,7 @@ switch ($opcion) {
                 echo "Ingrese el numero de ticket del pasajero: ";
                 $numTicket = datosPasajero();
                 $objColeccionPasajero = new Pasajeros ($nombre,$numAsiento,$numTicket);
-                $resultadoCambiarPasajero = $viaje->agregarPasajero($objColeccionPasajero);
+                $resultadoCambiarPasajero = $viaje->venderPasaje($objColeccionPasajero);
                 if ($resultadoCambiarPasajero) {
                     echo "El usuario ha sigo cargado";
                 } else{
@@ -92,7 +92,7 @@ switch ($opcion) {
                 echo "Ingrese la cantidad de millas que ha echo pasajero vip: ";
                 $cantMillasPasajero = datosPasajero();
                 $objColeccionPasajero = new PasajeroVip ($nombre,$numAsiento,$numTicket,$numViajeroFrecuente,$cantMillasPasajero);
-                $resultadoCambiarPasajero = $viaje->agregarPasajero($objColeccionPasajero);
+                $resultadoCambiarPasajero = $viaje->venderPasaje($objColeccionPasajero);
                 if ($resultadoCambiarPasajero) {
                     echo "El usuario ha sigo cargado";
                 } else{
@@ -119,7 +119,7 @@ switch ($opcion) {
                 echo "el pasajero especial tiene alguna restriccion alimentaria? Responder con si o no: ";
                 $restriccionAlimentaria = pedidosPasajeroEspecial();
                 $objColeccionPasajero = new PasajerosNecesidadesEspeciales ($nombre,$numAsiento,$numTicket,$servicioEspecial,$asistencia,$restriccionAlimentaria);
-                $resultadoCambiarPasajero = $viaje->agregarPasajero($objColeccionPasajero);
+                $resultadoCambiarPasajero = $viaje->venderPasaje($objColeccionPasajero);
                 if ($resultadoCambiarPasajero) {
                     echo "El usuario ha sigo cargado";
                 } else{
