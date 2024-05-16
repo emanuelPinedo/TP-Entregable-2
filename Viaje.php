@@ -99,23 +99,41 @@ class Viaje {
         $pasajeroRepetido = false;
         $contadorPasajeros = count($arregloPasajeros);
         $i = 0;
+        $cambiarPasajero = true;
         //verificar si el pasajero ya existe en la coleccion
         while (!$pasajeroRepetido && $i<$contadorPasajeros) {
-            if ($arregloPasajeros[$i]->getTicketPasaje() === $pasajero->getNumTicketPasaje()) {
+            if ($arregloPasajeros[$i]->getNumTicketPasaje() === $pasajero->getNumTicketPasaje()) {
                 $pasajeroRepetido = true;
             } else {
                 $i++;
             }
         }
-        $cambiarPasajero = true;
         //verificar si se puede agregar el pasajero al viaje
         if (!$pasajeroRepetido) {
             array_push($arregloPasajeros, $pasajero);
            $this->setColeObjPasajero($arregloPasajeros);
-        } else{
+        } else {
             $cambiarPasajero = false;
         } 
         return $cambiarPasajero;
+    }
+
+    public function modificarPasajero($objPersona){
+        $numTicket = $objPersona->getNumTicketPasaje();
+        $pasajeros = $this->getColeObjPasajero();
+        $contadorPasajeros = count($pasajeros);
+        $res = false;
+        $i = 0;
+        while (!$res && $i < $contadorPasajeros) {
+            if ($pasajeros[$i]->getNumTicketPasaje() === $numTicket) {
+                $pasajeros[$i] = $objPersona;
+                $this->setColeObjPasajero($pasajeros);
+                $res = true;
+            } else {
+                $i++;
+            }
+        }
+        return $res;
     }
 
     public function imprimirPasajeros(){
@@ -135,7 +153,7 @@ class Viaje {
         return $msj;
     }
 
-    public function modificarPasajero($nombreNuevo,$asientoNuevo,$ticketPasajero){
+    /*public function modificarPasajero($nombreNuevo,$asientoNuevo,$ticketPasajero){
         $pasajGuardado = $this->getColeObjPasajero();
         $cambiar = false;
         foreach ($pasajGuardado as $pasaj){
@@ -146,7 +164,7 @@ class Viaje {
             }
         }
         return $cambiar;
-    }
+    }*/
 
     public function modificarEmpleado($numeroLicencia, $nombreNuevoEmpleado, $apellidoNuevoEmpleado, $numeroNuevoEmpleado) {
         $empleadoResponsable = $this->getObjResponsableViaje();

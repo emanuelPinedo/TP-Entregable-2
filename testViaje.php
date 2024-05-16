@@ -112,7 +112,7 @@ switch ($opcion) {
                 $numAsiento = datosPasajero();
                 echo "Ingrese el numero de ticket del pasajero especial: ";
                 $numTicket = datosPasajero();
-                echo "el pasajero especial necesita un servicio especial? Responder con si o no";
+                echo "el pasajero especial necesita un servicio especial? Responder con si o no: ";
                 $servicioEspecial = pedidosPasajeroEspecial();
                 echo "el pasajero especial necesita un asistencia? Responder con si o no: ";
                 $asistencia = pedidosPasajeroEspecial();
@@ -140,11 +140,12 @@ switch ($opcion) {
         } else {
             echo "Ingrese el ticket del pasajero que quiere modificar: ";
             $numTicket = datosPasajero();
-            echo "Ingrese el nombre del pasajero: ";
+            echo "Ingrese el nuevo nombre del pasajero: ";
             $nombre = datosPasajero();
             echo "Ingrese su nuevo numero de asiento de pasajero: ";
             $numAsiento = datosPasajero();
-            $cambiarPersona = $viaje->modificarPasajero($nombre,$numAsiento,$numTicket);
+            $objColeccionPasajero = new Pasajeros($nombre, $numAsiento,$numTicket);
+            $cambiarPersona = $viaje->modificarPasajero($objColeccionPasajero);
             if ($cambiarPersona) {
                 echo "Se ha cambiado correctamente\n";
             } else {
@@ -167,7 +168,8 @@ switch ($opcion) {
             $numViajeroFrecuente = datosPasajero();
             echo "Ingrese la cantidad de millas que ha echo pasajero vip: ";
             $cantMillasPasajero = datosPasajero();
-            $cambiarPersona = $viaje->modificarPasajero($nombre,$numAsiento,$numTicket);
+            $objColeccionPasajero = new PasajeroVIP($nombre, $numAsiento,$numTicket,$numViajeroFrecuente,$cantMillasPasajero);
+            $cambiarPersona = $viaje->modificarPasajero($objColeccionPasajero);
             if ($cambiarPersona) {
                 echo "Se ha cambiado correctamente\n";
             } else {
@@ -192,7 +194,8 @@ switch ($opcion) {
             $asistencia = pedidosPasajeroEspecial();
             echo "el pasajero especial tiene alguna restriccion alimentaria? Responder con si o no: ";
             $restriccionAlimentaria = pedidosPasajeroEspecial();
-            $cambiarPersona = $viaje->modificarPasajero($nombre,$numAsiento,$numTicket);
+            $objColeccionPasajero = new PasajerosNecesidadesEspeciales($nombre, $numAsiento,$numTicket,$servicioEspecial,$asistencia,$restriccionAlimentaria);
+            $cambiarPersona = $viaje->modificarPasajero($objColeccionPasajero);
             if ($cambiarPersona) {
                 echo "Se ha cambiado correctamente\n";
             } else {
